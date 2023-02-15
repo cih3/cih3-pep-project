@@ -33,6 +33,8 @@ public class Account {
      * @param password
      */
     public Account(String username, String password){
+        this.setUsername(username);
+        this.setPassword(password);
 
     }
     /**
@@ -113,5 +115,8 @@ public class Account {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 '}';
+    }
+    public Account createnewlogin(Account account) {
+        return null;
     }
 }
