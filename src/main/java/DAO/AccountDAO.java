@@ -15,7 +15,7 @@ public class AccountDAO {
         Connection connection = ConnectionUtil.getConnection();
             //this is register
         try {
-            String sql = "Insert Into account (username, password) Values (?,?);"; 
+            String sql = "Insert Into account (username, password) Values (?,?)"; 
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, account.getUsername()); 
             preparedStatement.setString(2, account.getPassword()); 
@@ -37,7 +37,7 @@ public class AccountDAO {
     public Account ProcessUserLogins(String username, String password){
         Connection connection = ConnectionUtil.getConnection();
         try {
-            String sql = "Select * From account Where username = ? And password = ?;"; 
+            String sql = "Select * From account Where username = ? And password = ?"; 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, username); 
             preparedStatement.setString(2, password); 
