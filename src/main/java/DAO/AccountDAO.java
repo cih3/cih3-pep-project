@@ -13,7 +13,7 @@ public class AccountDAO {
 
     public Account CreateNewUsers(Account account){
         Connection connection = ConnectionUtil.getConnection();
-
+            //this is register
         try {
             String sql = "Insert Into account (username, password) Values (?,?);"; 
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);

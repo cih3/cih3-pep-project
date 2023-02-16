@@ -14,31 +14,34 @@ public class MessageService {
     public MessageService(MessageDAO messageDAO){
         this.messageDAO = messageDAO;
     }
-
+    //create a message
     public Message InsertNewMessage(Message message){
-        if(message.getMessage_text() == ""){
-            return null;
-        }return messageDAO.InsertNewMessage(message);
+        String messageString = message.getMessage_text();
+        if(!messageString.isBlank() && messageString.length()< 255){
+            return messageDAO.InsertNewMessage(message);  
+        }else{
+            return null; 
+        }
+        
     }
+
     public List <Message> getAllMessage(){
         return messageDAO.GetAllMessages();
     }
     public Message getMessageByid(int message_id){
-        if(messageDAO.getMessageById(message_id)!= null){
-            return messageDAO.getMessageById(message_id);
-        }
-        return null;
+        
+        return messageDAO.getMessageById(message_id);
     }
 
     public Message deletebyid(int message_id){
-        Message message = messageDAO.getMessageById(message_id);
+        Message message = this.messageDAO.getMessageById(message_id);
         messageDAO.DeleteMessagebyId(message_id);
         if(message == null){
             return null;
         }return message;
     }
     public Message updateMessages(int message_id, Message message){
-        if(getMessageByid(message_id)!= null && message.message_text != "" && message.message_text.length()<= 255){
+        if(messageDAO.getMessageById(message_id)!= null){
             return messageDAO.UpdatebyId(message_id, message);
         }
         return null;

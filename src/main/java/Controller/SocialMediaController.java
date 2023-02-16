@@ -27,7 +27,7 @@ public class SocialMediaController {
         app.post("/login", this::PostLoginHandler); //2
         app.post("/messages", this::CreatemessageHandler); //3
         app.get("/messages", this::GetAllMessageHandler); //4 
-        app.get("/messages/{message_id}", this::RetrieveIDHandler); //5 ????
+        app.get("/messages/{message_id}", this::RetrieveIDHandler); //5 
         app.delete("/messages/{message_id}", this::DeleteIDHandler); //6
         app.patch("/messages/{message_id}", this::UpdateIDHandler); //7
         app.get("/accounts/{account_id}/messages", this::RetrieveallHandler); //8
@@ -90,47 +90,51 @@ public class SocialMediaController {
     //#5 retrieve message by ID. /messages/{message_id}
     private void RetrieveIDHandler(Context ctx)throws JsonProcessingException {
             ObjectMapper mapper = new ObjectMapper();
-        int messages_id = Integer.parseInt(ctx.pathParam("message_id"));
-        Message listmessage = messageService.getMessageByid(messages_id);
+        int message_id = Integer.parseInt(ctx.pathParam("message_id"));
+        Message listmessage = messageService.getMessageByid(message_id);
         if(listmessage != null){
-            ctx.json(listmessage);
+            ctx.status(200);
+            ctx.json(mapper.writeValueAsString(listmessage));
+        }else{
+            ctx.status(401);
+            
         }
         
     }
     //#6 delete message by ID! /messages/{message_id}
     private void DeleteIDHandler(Context ctx) throws JsonProcessingException{
     
-    int messages_id = Integer.parseInt(ctx.pathParam("message_id"));
-    Message message = messageService.deletebyid(messages_id);
+    int message_id = Integer.parseInt(ctx.pathParam("message_id"));
+    Message message = messageService.deletebyid(message_id);
     if(message != null){
         ctx.json(message);
         }else{
-            ctx.status(200);
+        ctx.status(200);
         }
     }
-        //#7 update message by id /messages/{message_id}
+        //#7 update message by id /messages/{message_id} patch
+
     private void UpdateIDHandler(Context ctx)throws JsonProcessingException  {
         ObjectMapper mapper = new ObjectMapper();
         Message message = mapper.readValue(ctx.body(), Message.class);
-        int updateMessage = Integer.parseInt(ctx.pathParam("message_id"));
-        Message existingMessage = messageService.updateMessages(updateMessage, message);
-        if(existingMessage == null || existingMessage.message_text.isBlank()){
+        int message_id = Integer.parseInt(ctx.pathParam("message_id"));
+        Message existingMessage = messageService.updateMessages(message_id, message);
+        
+        if (message.message_text.isBlank() || existingMessage == null){
             ctx.status(400);
         }else{
             ctx.json(existingMessage);
         }
     }
     //8 retrieve all messages by a user id! /accounts/{account_id}/messages
-        private void RetrieveallHandler(Context ctx) {
+        private void RetrieveallHandler(Context ctx)throws JsonProcessingException {
             int posted_by = Integer.parseInt(ctx.pathParam("account_id"));
             List<Message> messages  = messageService.GetMessagesbyAccountid(posted_by);
-            if( messages != null){
-                ctx.json(messages);
+            ctx.json(messages);
             }
-            else{
-                ctx.status(200);
-            }
-            }
+            
+        
+    }
 
-}
+
     
