@@ -7,7 +7,8 @@ import Model.Message;
 
 public class MessageService {
         public MessageDAO messageDAO;
-    public MessageService(){
+    
+        public MessageService(){
         messageDAO = new MessageDAO();
     }
     public MessageService(MessageDAO messageDAO){
@@ -34,14 +35,16 @@ public class MessageService {
         messageDAO.DeleteMessagebyId(message_id);
         if(message == null){
             return null;
-        }
-        return message;
+        }return message;
     }
     public Message updateMessages(int message_id, Message message){
-        if(messageDAO.getMessageById(message_id)!= null){
+        if(getMessageByid(message_id)!= null && message.message_text != "" && message.message_text.length()<= 255){
             return messageDAO.UpdatebyId(message_id, message);
         }
         return null;
+    }
+    public List <Message>GetMessagesbyAccountid( int posted_by){
+        return messageDAO.GetMessagesbyAccountId(posted_by);
     }
 }
 
